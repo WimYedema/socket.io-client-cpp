@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 PROJECT(sioclient)
 
-option(BUILD_SHARED_LIBS "Build the shared library" OFF)
-option(Boost_USE_STATIC_LIBS "Use Boost static version" ON)
+option(BUILD_SHARED_LIBS "Build the shared library" ON)
+option(Boost_USE_STATIC_LIBS "Use Boost static version" OFF)
 
 set(MAJOR 1)
 set(MINOR 6)
@@ -43,6 +43,9 @@ set_target_properties(sioclient
 		SOVERSION ${MAJOR}
 		VERSION ${MAJOR}.${MINOR}.${PATCH}
 	)
+if (WIN32)
+    target_link_libraries(sioclient PRIVATE wsock32 ws2_32)
+endif()
 endif()
 list(APPEND TARGET_LIBRARIES sioclient)
 
@@ -66,6 +69,9 @@ set_target_properties(sioclient_tls
 		SOVERSION ${MAJOR}
 		VERSION ${MAJOR}.${MINOR}.${PATCH}
 	)
+endif()
+if (WIN32)
+    target_link_libraries(sioclient_tls PRIVATE wsock32 ws2_32)
 endif()
 list(APPEND TARGET_LIBRARIES sioclient_tls)
 
